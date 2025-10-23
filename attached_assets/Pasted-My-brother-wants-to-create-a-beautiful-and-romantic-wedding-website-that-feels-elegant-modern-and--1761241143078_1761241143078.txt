@@ -1,0 +1,44 @@
+My brother wants to create a beautiful and romantic wedding website that feels elegant, modern, and emotional.
+The color palette should include soft tones like white, beige, blush pink, and gold, with a clean layout, smooth animations, and a warm, welcoming atmosphere.
+At the top of the homepage, include a romantic slogan, such as:
+“Two hearts, one love.”
+or
+“Our journey begins.”
+or
+“Forever starts here.”
+The website should include the following sections:
+🕊️ 1. Home Page
+A beautiful hero section with the couple’s names, wedding date, and a large background photo of them together.
+Add a short storytelling paragraph to introduce their love story, for example:
+“Bruno and Ana’s story began by chance — a smile, a conversation, and an instant connection. Over time, that connection grew into something deeper: love, laughter, and endless memories. Now, they’re ready to celebrate their union with family and friends who have been part of their journey.”
+Include a wedding countdown timer and a gentle background animation (like floating petals, light particles, or a soft gradient).
+🎁 2. Gift List Page
+A grid of wedding gifts, each displayed as a card with:
+An image of the gift
+A short title and description
+A button to open a dedicated page for that gift
+Each individual gift page should include:
+A detailed description
+One or more purchase links (Amazon, Mercado Livre, Shopee, etc.)
+A personal note from the couple explaining why the gift matters to them
+Optionally, a way for guests to mark the item as “purchased” or “reserved”
+💝 3. Pix Donation Section
+A Pix contribution area where guests can easily send money to help the couple start their new life together.
+Include:
+A Pix QR code
+The couple’s Pix key
+A copy button for convenience
+A creative and elegant layout (for example, a small decorative card or popup modal)
+Add a heartfelt message such as:
+“Your love and generosity mean the world to us. Thank you for helping us build our future together.”
+💬 4. Contact Page
+A simple and friendly contact form where guests can send their greetings, wishes, or questions.
+Include fields for name, email, and message, and a “Send with Love” button.
+💍 5. Design & Style
+Use romantic typography (e.g., elegant serif fonts combined with soft cursive accents)
+Include subtle animations (fade-ins, smooth scrolling, floating petals, etc.)
+Ensure the website is fully responsive, looking perfect on both mobile and desktop
+Add a footer with the couple’s initials, wedding date, and social media links (optional)
+✨ Overall Mood
+The website should capture the feeling of love, gratitude, and celebration, while remaining simple, practical, and visually elegant.
+Guests should enjoy browsing the gifts and feel emotionally connected to the couple’s story from the moment they open the site.
