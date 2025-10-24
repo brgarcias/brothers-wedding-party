@@ -11,3 +11,11 @@ export const db = drizzle(pool, { schema });
 export const disconnect = async () => {
   await pool.end();
 };
+
+process.on("SIGINT", async () => {
+  if (pool) {
+    console.log("Fechando pool localmente...");
+    await pool.end();
+    process.exit(0);
+  }
+});

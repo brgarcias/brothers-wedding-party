@@ -1,0 +1,21 @@
+[build]
+  command = "rm -rf node_modules && pnpm install && pnpm build"
+  publish = ".next"
+  functions = "netlify/functions"
+
+[build.environment]
+  CI = "true"
+  NODE_ENV = "production"
+
+[functions]
+  node_bundler = "esbuild"
+
+[dev]
+  command = "pnpm dev"
+  targetPort = 3000
+  functionsPort = 5050
+  framework = "next"
+  autoLaunch = true
+
+[[plugins]]
+  package = "@netlify/plugin-nextjs"

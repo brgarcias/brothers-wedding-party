@@ -22,7 +22,8 @@ export default function Home() {
             draggable="false"
             src={heroImage}
             alt="avatar"
-            className="w-32 h-32 rounded-full object-cover z-0"
+            fill
+            className="w-32 h-32 object-cover z-0"
           />
           <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-black/30 to-black/50" />
         </div>
@@ -34,7 +35,7 @@ export default function Home() {
         <div className="relative z-10 text-center px-4 max-w-4xl mx-auto">
           <div className="animate-fadeIn">
             <h1
-              className="font-cursive text-5xl md:text-7xl text-white mb-6 drop-shadow-lg"
+              className="font-cursive text-4xl md:text-5xl text-white mb-6 drop-shadow-lg"
               data-testid="text-slogan"
             >
               Para sempre começa aqui

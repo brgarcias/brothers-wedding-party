@@ -30,7 +30,7 @@ export default function GiftCreate() {
     mutationFn: async () => {
       return await apiRequest(
         "POST",
-        `${process.env.NEXT_PUBLIC_NETLIFY_URL}/gifts`,
+        `${process.env.NEXT_PUBLIC_NETLIFY_URL}/gifts/create`,
         {
           title,
           description,

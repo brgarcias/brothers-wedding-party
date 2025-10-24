@@ -2,9 +2,7 @@
 
 import { useQuery } from "@tanstack/react-query";
 import { GiftCard } from "@/components/GiftCard";
-import { Button } from "@/components/ui/button";
-import { Gift as GiftIcon, Home } from "lucide-react";
-import Link from "next/link";
+import { Gift as GiftIcon } from "lucide-react";
 import type { Gift } from "@/shared/schema";
 
 export default function Gifts() {
@@ -14,27 +12,6 @@ export default function Gifts() {
 
   return (
     <div className="min-h-screen bg-background">
-      {/* Header */}
-      <header className="sticky top-0 z-50 bg-background/95 backdrop-blur-sm border-b">
-        <div className="max-w-7xl mx-auto px-4 py-4 flex items-center justify-between">
-          <Link href="/" data-testid="link-home">
-            <Button
-              variant="ghost"
-              size="sm"
-              className="gap-2"
-              data-testid="button-home"
-            >
-              <Home className="w-4 h-4" />
-              Início
-            </Button>
-          </Link>
-          <h1 className="font-serif text-2xl md:text-3xl text-foreground">
-            Lista de Presentes
-          </h1>
-          <div className="w-20" />
-        </div>
-      </header>
-
       {/* Content */}
       <main className="max-w-7xl mx-auto px-4 py-12">
         <div className="text-center mb-12 animate-fadeIn">

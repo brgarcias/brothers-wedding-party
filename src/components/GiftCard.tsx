@@ -23,6 +23,7 @@ export function GiftCard({ gift }: Readonly<GiftCardProps>) {
           <Image
             src={gift.imageUrl}
             alt={gift.title}
+            fill
             className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
             data-testid={`img-gift-${gift.id}`}
           />
@@ -52,7 +53,7 @@ export function GiftCard({ gift }: Readonly<GiftCardProps>) {
       </CardContent>
       <CardFooter className="p-6 pt-0">
         <Link
-          href={`/gift/${gift.id}`}
+          href={`/gifts/${gift.id}`}
           className="w-full"
           data-testid={`link-gift-${gift.id}`}
         >
