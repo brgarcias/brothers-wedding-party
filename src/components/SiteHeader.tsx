@@ -6,23 +6,29 @@ import { Button } from "@/components/ui/button";
 
 const SiteHeader = () => {
   return (
-    <header className="sticky top-0 z-50 bg-background/95 backdrop-blur-sm border-b">
-      <div className="max-w-7xl mx-auto px-4 py-4 flex items-center justify-between">
+    <header className="sticky top-0 z-50 bg-background/80 backdrop-blur-md border-b border-border/60">
+      <div className="max-w-7xl mx-auto px-4 md:px-6 py-3 flex items-center justify-between">
         <Link href="/" data-testid="link-home">
           <Button
             variant="ghost"
-            size="sm"
-            className="gap-2"
+            size="icon"
+            className="p-2 hover:bg-primary/10 transition-colors"
             data-testid="button-home"
           >
-            <Home className="w-4 h-4" />
-            Início
+            <Home className="w-6 h-6 text-primary" />
+            <span className="sr-only">Início</span>
           </Button>
         </Link>
-        <h1 className="font-serif text-2xl md:text-3xl text-foreground">
-          Leonardo <span className="text-primary">&</span> Débora
+        <h1 className="absolute left-1/2 -translate-x-1/2 font-serif text-xl md:text-2xl text-foreground font-medium select-none">
+          <span className="bg-gradient-to-r from-primary to-foreground bg-clip-text text-transparent">
+            Leonardo
+          </span>{" "}
+          &{" "}
+          <span className="bg-gradient-to-r from-foreground to-primary bg-clip-text text-transparent">
+            Débora
+          </span>
         </h1>
-        <div className="w-20" />
+        <div className="w-8 md:w-10" />
       </div>
     </header>
   );
