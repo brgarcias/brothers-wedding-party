@@ -13,10 +13,9 @@ import { Input } from "@/components/ui/input";
 import { Copy, Check, Heart } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import Image from "next/image";
+import PIX_QR_CODE from "@images/pix-qr.svg";
 
 const PIX_KEY = "leonardo.debora.casamento@email.com";
-const PIX_QR_CODE =
-  "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200'%3E%3Crect fill='white' width='200' height='200'/%3E%3Cg fill='black'%3E%3Crect x='20' y='20' width='20' height='20'/%3E%3Crect x='40' y='20' width='20' height='20'/%3E%3Crect x='60' y='20' width='20' height='20'/%3E%3Crect x='80' y='20' width='20' height='20'/%3E%3Crect x='100' y='20' width='20' height='20'/%3E%3Crect x='120' y='20' width='20' height='20'/%3E%3Crect x='140' y='20' width='20' height='20'/%3E%3Crect x='20' y='40' width='20' height='20'/%3E%3Crect x='140' y='40' width='20' height='20'/%3E%3Crect x='20' y='60' width='20' height='20'/%3E%3Crect x='60' y='60' width='20' height='20'/%3E%3Crect x='80' y='60' width='20' height='20'/%3E%3Crect x='100' y='60' width='20' height='20'/%3E%3Crect x='140' y='60' width='20' height='20'/%3E%3Crect x='20' y='80' width='20' height='20'/%3E%3Crect x='60' y='80' width='20' height='20'/%3E%3Crect x='80' y='80' width='20' height='20'/%3E%3Crect x='100' y='80' width='20' height='20'/%3E%3Crect x='140' y='80' width='20' height='20'/%3E%3Crect x='20' y='100' width='20' height='20'/%3E%3Crect x='60' y='100' width='20' height='20'/%3E%3Crect x='80' y='100' width='20' height='20'/%3E%3Crect x='100' y='100' width='20' height='20'/%3E%3Crect x='140' y='100' width='20' height='20'/%3E%3Crect x='20' y='120' width='20' height='20'/%3E%3Crect x='140' y='120' width='20' height='20'/%3E%3Crect x='20' y='140' width='20' height='20'/%3E%3Crect x='40' y='140' width='20' height='20'/%3E%3Crect x='60' y='140' width='20' height='20'/%3E%3Crect x='80' y='140' width='20' height='20'/%3E%3Crect x='100' y='140' width='20' height='20'/%3E%3Crect x='120' y='140' width='20' height='20'/%3E%3Crect x='140' y='140' width='20' height='20'/%3E%3Crect x='40' y='160' width='20' height='20'/%3E%3Crect x='100' y='160' width='20' height='20'/%3E%3Crect x='120' y='160' width='20' height='20'/%3E%3C/g%3E%3C/svg%3E";
 
 export function PixDonation() {
   const [copied, setCopied] = useState(false);
@@ -43,43 +42,46 @@ export function PixDonation() {
   return (
     <section className="py-20 px-4 bg-gradient-to-b from-background to-accent/20">
       <div className="max-w-2xl mx-auto">
+        {/* Introdução */}
         <div className="text-center mb-12 animate-fadeIn">
-          <Heart
-            className="w-12 h-12 text-primary mx-auto mb-4"
-            fill="currentColor"
-          />
+          <Heart className="w-14 h-14 text-primary mx-auto mb-4 animate-pulse" />
           <h2 className="font-serif text-4xl md:text-5xl text-foreground mb-4">
             Contribua com Pix
           </h2>
-          <p className="text-muted-foreground italic max-w-xl mx-auto">
-            &quot;Seu amor e generosidade significam o mundo para nós. Obrigado
-            por nos ajudar a construir nosso futuro juntos.&quot;
+          <p className="text-muted-foreground italic max-w-xl mx-auto text-lg">
+            Seu amor e generosidade significam o mundo para nós. Obrigado por
+            nos ajudar a construir nosso futuro juntos.
           </p>
         </div>
 
-        <Card className="border-2 border-primary/20 shadow-xl">
-          <CardHeader className="text-center pb-4">
-            <CardTitle className="font-serif text-2xl">
+        {/* Card Pix */}
+        <Card className="border-2 border-primary/20 shadow-2xl hover:shadow-3xl transition-shadow duration-300">
+          <CardHeader className="text-center pb-6">
+            <CardTitle className="font-serif text-2xl md:text-3xl">
               Envie seu presente via Pix
             </CardTitle>
-            <CardDescription>
-              Escaneie o código QR ou copie nossa chave Pix
+            <CardDescription className="text-base md:text-lg">
+              Escaneie o QR code ou copie nossa chave Pix
             </CardDescription>
           </CardHeader>
+
           <CardContent className="space-y-6">
+            {/* QR Code */}
             <div className="flex justify-center">
-              <div className="bg-white p-4 rounded-lg shadow-md">
+              <div className="bg-white p-6 rounded-xl shadow-lg hover:scale-105 transition-transform duration-300">
                 <Image
                   src={PIX_QR_CODE}
-                  width={100}
-                  height={100}
+                  width={240}
+                  height={240}
+                  draggable="false"
                   alt="Pix QR Code"
-                  className="w-48 h-48"
+                  className="w-60 h-60"
                   data-testid="img-pix-qr"
                 />
               </div>
             </div>
 
+            {/* Chave Pix com botão */}
             <div className="space-y-2">
               <label
                 htmlFor="pix-key"
@@ -92,27 +94,29 @@ export function PixDonation() {
                   id="pix-key"
                   value={PIX_KEY}
                   readOnly
-                  className="font-mono text-sm"
+                  className="font-mono text-sm flex-1"
                   data-testid="input-pix-key"
                 />
                 <Button
                   onClick={copyPixKey}
-                  variant="outline"
+                  variant={copied ? "secondary" : "outline"}
                   size="icon"
                   className="shrink-0"
                   data-testid="button-copy-pix"
+                  aria-label="Copiar chave Pix"
                 >
                   {copied ? (
-                    <Check className="w-4 h-4 text-primary" />
+                    <Check className="w-5 h-5 text-white" />
                   ) : (
-                    <Copy className="w-4 h-4" />
+                    <Copy className="w-5 h-5" />
                   )}
                 </Button>
               </div>
             </div>
 
+            {/* Mensagem final */}
             <div className="text-center pt-4">
-              <p className="text-sm text-muted-foreground">
+              <p className="text-sm md:text-base text-muted-foreground">
                 Cada contribuição, grande ou pequena, significa muito para nós.
                 <br />
                 Obrigado por fazer parte do nosso dia especial!
