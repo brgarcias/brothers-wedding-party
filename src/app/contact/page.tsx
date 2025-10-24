@@ -45,7 +45,7 @@ export default function Contact() {
     mutationFn: async (data: InsertMessage) => {
       return await apiRequest(
         "POST",
-        `${process.env.NEXT_PUBLIC_NETLIFY_URL}/messages`,
+        `${process.env.NEXT_PUBLIC_NETLIFY_URL}/messages/create`,
         data
       );
     },

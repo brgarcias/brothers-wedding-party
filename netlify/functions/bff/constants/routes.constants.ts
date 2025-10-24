@@ -14,7 +14,10 @@ export const ROUTES: RouteTable = {
   "/gifts/:id/reserve": {
     POST: storage.reserveGift,
   },
-  "/messages": {
+  "/messages/create": {
     POST: storage.createMessage,
+  },
+  "/messages": {
+    GET: storage.getAllMessages,
   },
 };

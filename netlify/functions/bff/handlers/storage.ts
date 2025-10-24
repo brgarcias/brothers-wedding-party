@@ -11,7 +11,9 @@ export interface IStorage {
   getGift(event: HandlerEvent): Promise<HandlerResponse>;
   createGift(event: HandlerEvent): Promise<HandlerResponse>;
   updateGift(id: string, gift: Partial<Gift>): Promise<Gift | undefined>;
+
   createMessage(event: HandlerEvent): Promise<HandlerResponse>;
+  getAllMessages(): Promise<HandlerResponse>;
 
   reserveGift(event: HandlerEventWithParams): Promise<HandlerResponse>;
 }
@@ -115,6 +117,17 @@ export class DrizzleStorage implements IStorage {
     } catch (error) {
       console.error("Error creating message:", error);
       return errorResponse(500, "Failed to create message");
+    }
+  }
+
+  async getAllMessages(): Promise<HandlerResponse> {
+    try {
+      const messagesResponse = await db.select().from(messages);
+
+      return jsonResponse(200, messagesResponse);
+    } catch (error) {
+      console.error("Error fetching messages:", error);
+      return errorResponse(500, "Failed to fetch messages");
     }
   }
 
