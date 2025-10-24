@@ -65,7 +65,9 @@ export class DrizzleStorage implements IStorage {
     const id = randomUUID();
     const insertGift: InsertGift = JSON.parse(event.body || "{}");
     try {
-      await db.insert(gifts).values({ ...insertGift, id });
+      await db.transaction(async (tx) => {
+        await tx.insert(gifts).values({ ...insertGift, id });
+      });
       return jsonResponse(201, {
         id,
         ...insertGift,
@@ -83,12 +85,15 @@ export class DrizzleStorage implements IStorage {
     updates: Partial<Gift>
   ): Promise<Gift | undefined> {
     try {
-      await db.update(gifts).set(updates).where(eq(gifts.id, id));
-      return db
-        .select()
-        .from(gifts)
-        .where(eq(gifts.id, id))
-        .then((rows) => rows[0]);
+      return await db.transaction(async (tx) => {
+        await tx.update(gifts).set(updates).where(eq(gifts.id, id));
+        const updatedGift = await tx
+          .select()
+          .from(gifts)
+          .where(eq(gifts.id, id))
+          .then((rows) => rows[0]);
+        return updatedGift;
+      });
     } catch (error) {
       console.error("Error updating gift:", error);
       return undefined;
@@ -103,7 +108,9 @@ export class DrizzleStorage implements IStorage {
     const createdAt = new Date();
     const insertMessage: InsertMessage = JSON.parse(event.body || "{}");
     try {
-      await db.insert(messages).values({ ...insertMessage, id, createdAt });
+      await db.transaction(async (tx) => {
+        await tx.insert(messages).values({ ...insertMessage, id, createdAt });
+      });
       return jsonResponse(201, { id, ...insertMessage, createdAt });
     } catch (error) {
       console.error("Error creating message:", error);
@@ -123,23 +130,28 @@ export class DrizzleStorage implements IStorage {
     }
 
     try {
-      const gift = await db
-        .select()
-        .from(gifts)
-        .where(eq(gifts.id, giftId))
-        .then((rows) => rows[0]);
-      if (!gift) throw new Error("Gift not found");
-      if (gift.reserved) throw new Error("Gift already reserved");
+      return await db.transaction(async (tx) => {
+        const gift = await tx
+          .select()
+          .from(gifts)
+          .where(eq(gifts.id, giftId))
+          .then((rows) => rows[0]);
+        if (!gift) throw new Error("Gift not found");
+        if (gift.reserved) throw new Error("Gift already reserved");
 
-      const id = randomUUID();
-      const createdAt = new Date();
+        const id = randomUUID();
+        const createdAt = new Date();
 
-      await db
-        .insert(reservations)
-        .values({ id, giftId, guestName, createdAt });
-      await this.updateGift(giftId, { reserved: true, reservedBy: guestName });
+        await tx
+          .insert(reservations)
+          .values({ id, giftId, guestName, createdAt });
+        await tx
+          .update(gifts)
+          .set({ reserved: true, reservedBy: guestName })
+          .where(eq(gifts.id, giftId));
 
-      return jsonResponse(201, { id, giftId, guestName, createdAt });
+        return jsonResponse(201, { id, giftId, guestName, createdAt });
+      });
     } catch (error) {
       console.error("Error reserving gift:", error);
       return errorResponse(500, "Failed to reserve gift");

@@ -34,13 +34,21 @@ export default function GiftDetail() {
 
   const reserveMutation = useMutation({
     mutationFn: async (name: string) => {
-      return await apiRequest("POST", `/api/gifts/${giftId}/reserve`, {
-        guestName: name,
-      });
+      return await apiRequest(
+        "POST",
+        `${process.env.NEXT_PUBLIC_NETLIFY_URL}/gifts/${giftId}/reserve`,
+        {
+          guestName: name,
+        }
+      );
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["/api/gifts"] });
-      queryClient.invalidateQueries({ queryKey: ["/api/gifts", giftId] });
+      queryClient.invalidateQueries({
+        queryKey: [`${process.env.NEXT_PUBLIC_NETLIFY_URL}/gifts`],
+      });
+      queryClient.invalidateQueries({
+        queryKey: [`${process.env.NEXT_PUBLIC_NETLIFY_URL}/gifts`, giftId],
+      });
       toast({
         title: "Presente reservado!",
         description:
