@@ -93,7 +93,7 @@ Preferred communication style: Simple, everyday language.
 
 **Seeded Data:**
 
-- 5 initial gifts with product images stored in `attached_assets/generated_images/`
+- 5 initial gifts with product images stored in `@images/`
 - Gifts include: Dinnerware Set, Luxury Bedding, Kitchen Faucet, Cookware Set, Crystal Glasses
 
 ### Project Structure
