@@ -23,7 +23,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { ArrowLeft, Heart, Send, CheckCircle2 } from "lucide-react";
+import { Heart, Send, CheckCircle2 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { apiRequest } from "@/lib/queryClient";
 import { insertMessageSchema, type InsertMessage } from "@/shared/schema";
@@ -73,74 +73,42 @@ export default function Contact() {
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-background to-accent/20">
-      {/* Header */}
-      <header className="sticky top-0 z-50 bg-background/95 backdrop-blur-sm border-b">
-        <div className="max-w-4xl mx-auto px-4 py-4">
-          <Link href="/" data-testid="link-home">
-            <Button
-              variant="ghost"
-              size="sm"
-              className="gap-2"
-              data-testid="button-home"
-            >
-              <ArrowLeft className="w-4 h-4" />
-              Início
-            </Button>
-          </Link>
-        </div>
-      </header>
-
-      {/* Content */}
-      <main className="max-w-2xl mx-auto px-4 py-12">
-        <div className="text-center mb-12 animate-fadeIn">
+      {/* Main content */}
+      <main className="max-w-2xl mx-auto px-4 py-12 space-y-12">
+        {/* Header text */}
+        <div className="text-center animate-fadeIn space-y-4">
           <Heart
-            className="w-12 h-12 text-primary mx-auto mb-4"
+            className="w-12 h-12 text-primary mx-auto mb-2"
             fill="currentColor"
           />
-          <h1
-            className="font-serif text-4xl md:text-5xl text-foreground mb-4"
-            data-testid="text-contact-title"
-          >
+          <h1 className="font-serif text-4xl md:text-5xl text-foreground mb-2">
             Envie seus votos
           </h1>
-          <p
-            className="text-muted-foreground max-w-xl mx-auto"
-            data-testid="text-contact-description"
-          >
+          <p className="text-muted-foreground max-w-xl mx-auto">
             Compartilhe mensagens do coração, felicitações ou qualquer dúvida
-            que você tenha para nós
+            que você tenha para nós.
           </p>
         </div>
 
+        {/* Form or Success */}
         {submitted ? (
-          <Card
-            className="border-2 border-primary/20 shadow-xl animate-fadeIn"
-            data-testid="card-success"
-          >
-            <CardContent className="pt-12 pb-12 text-center">
-              <CheckCircle2 className="w-16 h-16 text-primary mx-auto mb-6" />
-              <h2
-                className="font-serif text-3xl text-foreground mb-4"
-                data-testid="text-success-title"
-              >
-                Obrigado!
-              </h2>
-              <p
-                className="text-muted-foreground mb-8 max-w-md mx-auto"
-                data-testid="text-success-message"
-              >
+          <Card className="border-2 border-primary/20 shadow-xl animate-fadeIn">
+            <CardContent className="pt-12 pb-12 text-center space-y-6">
+              <CheckCircle2 className="w-16 h-16 text-primary mx-auto" />
+              <h2 className="font-serif text-3xl text-foreground">Obrigado!</h2>
+              <p className="text-muted-foreground max-w-md mx-auto">
                 Sua mensagem foi enviada. Nós a leremos com alegria e gratidão.
               </p>
-              <div className="flex gap-4 justify-center">
+              <div className="flex flex-col md:flex-row gap-4 justify-center">
                 <Button
                   onClick={() => setSubmitted(false)}
                   variant="outline"
-                  data-testid="button-send-another"
+                  className="w-full md:w-auto"
                 >
                   Enviar Outra Mensagem
                 </Button>
-                <Link href="/" data-testid="link-back-home">
-                  <Button data-testid="button-back-home">
+                <Link href="/">
+                  <Button className="w-full md:w-auto">
                     Voltar para o Início
                   </Button>
                 </Link>
@@ -173,7 +141,7 @@ export default function Contact() {
                           <Input
                             placeholder="Seu nome"
                             {...field}
-                            data-testid="input-name"
+                            className="focus:ring-primary focus:border-primary"
                           />
                         </FormControl>
                         <FormMessage />
@@ -192,7 +160,7 @@ export default function Contact() {
                             type="email"
                             placeholder="seu.email@exemplo.com"
                             {...field}
-                            data-testid="input-email"
+                            className="focus:ring-primary focus:border-primary"
                           />
                         </FormControl>
                         <FormMessage />
@@ -209,9 +177,8 @@ export default function Contact() {
                         <FormControl>
                           <Textarea
                             placeholder="Compartilhe suas mensagens calorosas, memórias ou recados com nós..."
-                            className="min-h-32 resize-none"
+                            className="min-h-32 resize-none focus:ring-primary focus:border-primary"
                             {...field}
-                            data-testid="input-message"
                           />
                         </FormControl>
                         <FormMessage />
@@ -221,14 +188,13 @@ export default function Contact() {
 
                   <Button
                     type="submit"
-                    className="w-full gap-2"
+                    className="w-full gap-2 flex justify-center items-center"
                     disabled={sendMessageMutation.isPending}
-                    data-testid="button-send"
                   >
-                    <Send className="w-4 h-4" />
                     {sendMessageMutation.isPending
                       ? "Enviando..."
                       : "Enviar com Amor"}
+                    <Send className="w-4 h-4" />
                   </Button>
                 </form>
               </Form>
