@@ -20,7 +20,7 @@ const SiteHeader = () => {
           </Button>
         </Link>
         <h1 className="font-serif text-2xl md:text-3xl text-foreground">
-          Lista de Presentes
+          Leonardo <span className="text-primary">&</span> Débora
         </h1>
         <div className="w-20" />
       </div>

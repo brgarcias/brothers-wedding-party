@@ -1,5 +1,8 @@
+"use client";
+
 import { Card, CardContent } from "@/components/ui/card";
-import { AlertCircle, Link } from "lucide-react";
+import { AlertCircle, Home } from "lucide-react";
+import { Button } from "@/components/ui/button";
 
 export default function NotFound() {
   return (
@@ -13,13 +16,15 @@ export default function NotFound() {
           <p className="text-gray-600 mb-6">
             Parece que você se perdeu pelo caminho 😅
           </p>
-
-          <Link
-            href="/"
-            className="inline-block px-6 py-2 bg-blue-600 text-white font-medium rounded hover:bg-blue-700 transition-colors"
+          <Button
+            variant="ghost"
+            size="sm"
+            className="gap-2"
+            data-testid="button-home"
           >
+            <Home className="w-4 h-4" />
             Voltar para o Início
-          </Link>
+          </Button>
         </CardContent>
       </Card>
 

@@ -1,7 +1,7 @@
 "use client";
 
 import { Card, CardContent } from "@/components/ui/card";
-import { AlertTriangle, Link } from "lucide-react";
+import { AlertTriangle } from "lucide-react";
 
 export default function ErrorPage() {
   return (
@@ -15,13 +15,6 @@ export default function ErrorPage() {
           <p className="text-gray-600 mb-6">
             Ocorreu um erro inesperado. Tente novamente em alguns instantes.
           </p>
-
-          <Link
-            href="/"
-            className="inline-block px-6 py-2 bg-blue-600 text-white font-medium rounded hover:bg-blue-700 transition-colors"
-          >
-            Voltar para o Início
-          </Link>
         </CardContent>
       </Card>
 
