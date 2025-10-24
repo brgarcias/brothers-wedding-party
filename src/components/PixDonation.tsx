@@ -71,6 +71,8 @@ export function PixDonation() {
               <div className="bg-white p-4 rounded-lg shadow-md">
                 <Image
                   src={PIX_QR_CODE}
+                  width={100}
+                  height={100}
                   alt="Pix QR Code"
                   className="w-48 h-48"
                   data-testid="img-pix-qr"

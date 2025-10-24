@@ -16,7 +16,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft, Gift as GiftIcon, CheckCircle2 } from "lucide-react";
-import { Link } from "wouter";
+import Link from "next/link";
 
 export default function GiftCreate() {
   const { toast } = useToast();

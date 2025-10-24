@@ -4,8 +4,8 @@ import { useQuery } from "@tanstack/react-query";
 import { GiftCard } from "@/components/GiftCard";
 import { Button } from "@/components/ui/button";
 import { Gift as GiftIcon, Home } from "lucide-react";
-import { Link } from "wouter";
-import type { Gift } from "@shared/schema";
+import Link from "next/link";
+import type { Gift } from "@/shared/schema";
 
 export default function Gifts() {
   const { data: gifts, isLoading } = useQuery<Gift[]>({

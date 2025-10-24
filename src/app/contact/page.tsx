@@ -4,7 +4,7 @@ import { useState } from "react";
 import { useMutation } from "@tanstack/react-query";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Link } from "wouter";
+import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -26,7 +26,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { ArrowLeft, Heart, Send, CheckCircle2 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { apiRequest } from "@/lib/queryClient";
-import { insertMessageSchema, type InsertMessage } from "@shared/schema";
+import { insertMessageSchema, type InsertMessage } from "@/shared/schema";
 
 export default function Contact() {
   const [submitted, setSubmitted] = useState(false);

@@ -1,6 +1,6 @@
 "use client";
 
-import { Link } from "wouter";
+import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { FloatingPetals } from "@/components/FloatingPetals";
 import { CountdownTimer } from "@/components/CountdownTimer";

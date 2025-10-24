@@ -7,8 +7,8 @@ import {
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Gift as GiftIcon, CheckCircle2 } from "lucide-react";
-import { Link } from "wouter";
-import type { Gift } from "@shared/schema";
+import Link from "next/link";
+import type { Gift } from "@/shared/schema";
 import Image from "next/image";
 
 interface GiftCardProps {

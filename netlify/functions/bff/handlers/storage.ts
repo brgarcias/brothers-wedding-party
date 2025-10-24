@@ -1,7 +1,7 @@
 import { db } from "../../db";
-import { gifts, messages, reservations } from "@shared/schema";
+import { gifts, messages, reservations } from "@/shared/schema";
 import { randomUUID } from "node:crypto";
-import type { Gift, InsertGift, InsertMessage } from "@shared/schema";
+import type { Gift, InsertGift, InsertMessage } from "@/shared/schema";
 import { eq } from "drizzle-orm";
 import { HandlerEvent, HandlerResponse } from "@netlify/functions";
 import { errorResponse, jsonResponse } from "@/utils";

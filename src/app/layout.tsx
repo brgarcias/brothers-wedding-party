@@ -127,7 +127,6 @@ export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
-  params: any;
 }>) {
   return (
     <html lang="en" className={`${poppins.className} scroll-smooth`}>
