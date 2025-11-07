@@ -1,10 +1,8 @@
 "use client";
 
 import { useQuery } from "@tanstack/react-query";
-import Link from "next/link";
-import { ArrowLeft, Mail, User, MessageCircle, Loader2 } from "lucide-react";
+import { Mail, User, MessageCircle, Loader2 } from "lucide-react";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
 import type { Message } from "@/shared/schema";
 
@@ -33,20 +31,6 @@ export default function MessagesPage() {
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-background to-accent/20">
-      {/* Header */}
-      <header className="sticky top-0 z-50 bg-background/95 backdrop-blur-sm border-b">
-        <div className="max-w-4xl mx-auto px-4 py-4 flex items-center">
-          <Link href="/">
-            <Button variant="ghost" size="sm" className="gap-2">
-              <ArrowLeft className="w-4 h-4" />
-              Início
-            </Button>
-          </Link>
-          <h1 className="font-serif text-2xl ml-4">Mensagens Recebidas</h1>
-        </div>
-      </header>
-
-      {/* Content */}
       <main className="max-w-4xl mx-auto px-4 py-12 space-y-6">
         {(!data || data.length === 0) && (
           <Card className="text-center py-12 shadow-md border-2 border-primary/20">

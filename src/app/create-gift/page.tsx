@@ -15,8 +15,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
-import { ArrowLeft, Gift as GiftIcon, CheckCircle2 } from "lucide-react";
-import Link from "next/link";
+import { Gift as GiftIcon, CheckCircle2 } from "lucide-react";
 
 export default function GiftCreate() {
   const { toast } = useToast();
@@ -74,13 +73,6 @@ export default function GiftCreate() {
   return (
     <div className="min-h-screen bg-background flex flex-col items-center px-4 py-12">
       <div className="max-w-2xl w-full">
-        <Link href="/gifts">
-          <Button variant="ghost" size="sm" className="mb-6 gap-2">
-            <ArrowLeft className="w-4 h-4" />
-            Voltar para a lista de presentes
-          </Button>
-        </Link>
-
         <Card className="shadow-lg">
           <CardHeader>
             <CardTitle className="text-2xl font-serif flex items-center gap-2">
