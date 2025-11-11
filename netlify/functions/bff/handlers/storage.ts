@@ -38,8 +38,8 @@ export class DrizzleStorage implements IStorage {
 
   async getGift(event: HandlerEvent): Promise<HandlerResponse> {
     const giftId = event.path.split("/").pop();
-    if (!giftId || Number.isNaN(Number.parseInt(giftId))) {
-      return errorResponse(400, "Invalid gift ID");
+    if (!giftId) {
+      return errorResponse(400, `Invalid gift ID: ${giftId}`);
     }
 
     try {

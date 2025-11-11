@@ -2,6 +2,7 @@
 
 import { useEffect, useState, useCallback } from "react";
 import { Card } from "@/components/ui/card";
+import { motion, AnimatePresence } from "framer-motion";
 
 interface TimeLeft {
   days: number;
@@ -41,38 +42,62 @@ export function CountdownTimer({ targetDate }: Readonly<CountdownTimerProps>) {
   }, [calculateTimeLeft]);
 
   const timeUnits = [
-    { label: "Days", value: timeLeft.days },
-    { label: "Hours", value: timeLeft.hours },
-    { label: "Minutes", value: timeLeft.minutes },
-    { label: "Seconds", value: timeLeft.seconds },
+    { label: "Dias", value: timeLeft.days },
+    { label: "Horas", value: timeLeft.hours },
+    { label: "Minutos", value: timeLeft.minutes },
+    { label: "Segundos", value: timeLeft.seconds },
   ];
 
   return (
-    <Card
-      className="bg-accent/50 backdrop-blur-sm border-accent-border px-8 py-6 animate-fadeIn"
-      data-testid="card-countdown"
+    <motion.div
+      className="relative rounded-2xl mx-auto"
+      animate={{
+        boxShadow: [
+          "0 0 0px 0px hsl(122 16% 55% / 0)",
+          "8px 8px 20px -4px hsl(122 16% 55% / 0.25), -8px -8px 20px -4px hsl(122 16% 75% / 0.2)",
+          "0 0 0px 0px hsl(122 16% 55% / 0)",
+        ],
+      }}
+      transition={{
+        duration: 5,
+        repeat: Infinity,
+        ease: "easeInOut",
+      }}
     >
-      <div className="flex gap-6 justify-center">
-        {timeUnits.map((unit, index) => (
-          <div key={unit.label} className="flex flex-col items-center">
+      <Card
+        className="bg-white/10 border border-white/20 backdrop-blur-sm rounded-2xl px-4 sm:px-8 py-6 shadow-sm animate-fadeIn"
+        data-testid="card-countdown"
+      >
+        <div className="flex items-center justify-center gap-3 sm:gap-6 md:gap-10">
+          {timeUnits.map((unit, index) => (
             <div
-              className="text-4xl md:text-5xl font-serif font-light text-primary mb-1"
-              data-testid={`text-countdown-${unit.label.toLowerCase()}`}
+              key={unit.label}
+              className="flex flex-col items-center relative"
             >
-              {String(unit.value).padStart(2, "0")}
+              <AnimatePresence mode="wait">
+                <motion.div
+                  key={unit.value}
+                  initial={{ opacity: 0, y: 6 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -6 }}
+                  transition={{ duration: 0.3, ease: "easeOut" }}
+                  className="text-3xl sm:text-4xl md:text-5xl font-serif text-white font-light tracking-wide"
+                >
+                  {String(unit.value).padStart(2, "0")}
+                </motion.div>
+              </AnimatePresence>
+
+              <div className="mt-1 text-[10px] sm:text-xs md:text-sm uppercase tracking-[0.25em] text-primary font-medium">
+                {unit.label}
+              </div>
+
+              {index < timeUnits.length - 1 && (
+                <span className="hidden md:block absolute right-[-20px] top-4 h-10 w-px bg-white/20" />
+              )}
             </div>
-            <div className="text-xs md:text-sm text-muted-foreground uppercase tracking-wider">
-              {unit.label}
-            </div>
-            {index < timeUnits.length - 1 && (
-              <div
-                className="hidden md:block absolute h-8 w-px bg-primary/30"
-                style={{ left: `${(index + 1) * 25 - 2}%` }}
-              />
-            )}
-          </div>
-        ))}
-      </div>
-    </Card>
+          ))}
+        </div>
+      </Card>
+    </motion.div>
   );
 }
