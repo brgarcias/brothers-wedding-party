@@ -96,14 +96,24 @@ export default function ReservedGifts() {
           Buscar presentes
         </Label>
         <div className="relative">
-          <Search className="w-5 h-5 absolute left-3 top-1/2 -translate-y-1/2 text-primary/80" />
+          <div className="absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none">
+            <Search
+              className="w-5 h-5 text-primary/80 drop-shadow-[0_0_0.5px_rgba(0,0,0,0.2)] will-change-transform"
+              style={{
+                transform: "translateZ(0)", // força renderização nítida
+                backfaceVisibility: "hidden",
+                WebkitFontSmoothing: "antialiased",
+              }}
+            />
+          </div>
+
           <Input
             id="filter"
             type="text"
             placeholder="Buscar por nome ou presente..."
             value={filter}
             onChange={(e) => setFilter(e.target.value)}
-            className="pl-10 bg-white/10 border-white/20 text-white placeholder:text-white/70 backdrop-blur-sm focus:border-primary/40 focus:ring-0"
+            className="pl-10 bg-white/10 border-white/20 text-white placeholder:text-white/70 focus:border-primary/40 focus:ring-0"
           />
         </div>
       </section>
