@@ -14,6 +14,9 @@ import { Copy, Check, Heart } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import Image from "next/image";
 import PIX_QR_CODE from "@images/pix-qr.svg";
+import { motion } from "framer-motion";
+import leftFlower from "@images/flower-left.svg";
+import rightFlower from "@images/flower-right.svg";
 
 const PIX_KEY = "leonardo.debora.casamento@email.com";
 
@@ -40,33 +43,49 @@ export function PixDonation() {
   };
 
   return (
-    <section className="py-28 px-6 bg-gradient-to-t from-accent/20 via-background to-background">
-      <div className="max-w-2xl mx-auto text-center animate-fadeIn space-y-12">
+    <section className="relative py-32 px-6 overflow-hidden bg-gradient-to-b from-accent/30 via-background to-background">
+      {/* Flores decorativas */}
+      <div className="absolute inset-0 pointer-events-none">
+        <div className="absolute -left-20 top-10 opacity-[0.15] animate-floral">
+          <Image src={leftFlower} alt="Flor esquerda" draggable="false" />
+        </div>
+        <div className="absolute -right-24 bottom-10 opacity-[0.15] animate-floral-slow">
+          <Image src={rightFlower} alt="Flor direita" draggable="false" />
+        </div>
+      </div>
+
+      <div className="relative max-w-3xl mx-auto text-center animate-fadeIn space-y-12">
+        {/* Cabeçalho */}
         <div className="flex flex-col items-center gap-4">
-          <Heart className="w-14 h-14 text-primary animate-pulse-slow" />
-          <h2 className="font-serif text-4xl md:text-5xl text-primary tracking-wide">
+          <Heart className="w-14 h-14 text-primary animate-pulse-slow drop-shadow-md" />
+          <h2 className="font-serif text-4xl md:text-5xl text-primary tracking-wide drop-shadow-sm">
             Contribua com Pix
           </h2>
-          <p className="text-muted-foreground italic max-w-xl text-lg font-light">
-            Seu amor e generosidade significam o mundo para nós. Obrigado por
-            nos ajudar a construir nosso futuro juntos.
+          <p className="text-muted-foreground italic max-w-2xl text-lg md:text-xl font-light leading-relaxed">
+            Seu carinho e generosidade tornam esse momento ainda mais especial.
+            Agradecemos por compartilhar conosco o início dessa nova etapa. 💖
           </p>
         </div>
 
-        <Card className="border border-primary/20 bg-white/5 backdrop-blur-sm rounded-2xl shadow-xl hover:shadow-2xl transition-shadow duration-500">
-          <CardHeader className="text-center pb-6">
+        {/* Card Pix */}
+        <Card className="border border-primary/20 bg-white/10 backdrop-blur-xl rounded-3xl shadow-2xl hover:shadow-[0_0_40px_rgba(122,122,122,0.2)] transition-all duration-500">
+          <CardHeader className="text-center pb-8">
             <CardTitle className="font-serif text-2xl md:text-3xl text-foreground">
-              Envie seu presente via Pix
+              Envie seu presente com amor
             </CardTitle>
             <CardDescription className="text-base md:text-lg text-muted-foreground">
-              Escaneie o QR code ou copie nossa chave Pix
+              Escaneie o QR Code ou copie nossa chave Pix abaixo
             </CardDescription>
           </CardHeader>
 
-          <CardContent className="space-y-8">
+          <CardContent className="space-y-10">
             {/* QR Code */}
             <div className="flex justify-center">
-              <div className="bg-white p-6 rounded-2xl shadow-lg hover:scale-[1.03] transition-transform duration-500">
+              <motion.div
+                whileHover={{ scale: 1.03 }}
+                transition={{ duration: 0.3 }}
+                className="bg-white p-6 rounded-2xl shadow-lg"
+              >
                 <Image
                   src={PIX_QR_CODE}
                   width={240}
@@ -75,7 +94,7 @@ export function PixDonation() {
                   alt="Pix QR Code"
                   className="w-60 h-60"
                 />
-              </div>
+              </motion.div>
             </div>
 
             {/* Chave Pix */}
@@ -111,8 +130,8 @@ export function PixDonation() {
 
             {/* Mensagem final */}
             <p className="text-sm md:text-base text-muted-foreground/90 text-center leading-relaxed">
-              Cada contribuição, grande ou pequena, é um gesto de amor. Obrigado
-              por fazer parte do nosso dia especial!
+              Cada contribuição é uma semente de amor plantada no início da
+              nossa jornada. 🌷 Obrigado por fazer parte deste momento!
             </p>
           </CardContent>
         </Card>

@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { FloatingPetals } from "@/components/FloatingPetals";
 import { CountdownTimer } from "@/components/CountdownTimer";
 import { PixDonation } from "@/components/PixDonation";
-import { Gift, Mail } from "lucide-react";
+import { Gift, Heart, Mail } from "lucide-react";
 import heroImage from "@images/banner.jpeg";
 import leftFlower from "@images/flower-left.svg";
 import rightFlower from "@images/flower-right.svg";
@@ -88,55 +88,54 @@ export default function Home() {
       </section>
 
       {/* Love Story Section */}
-      <section className="relative py-32 px-6 overflow-hidden bg-gradient-to-b from-background via-card/80 to-accent/10">
-        {/* Background floral e ornamentos */}
+      {/* Love Story Section */}
+      <section className="relative py-32 px-6 overflow-hidden bg-gradient-to-b from-background via-card/70 to-accent/10">
+        {/* Fundo decorativo */}
         <div className="absolute inset-0 pointer-events-none">
-          {/* Flor esquerda */}
-          <div className="absolute -left-20 top-0 md:-left-32 opacity-[0.15] md:opacity-[0.18] scale-90 md:scale-100">
-            <Image
-              src={leftFlower}
-              alt="left-flower"
-              className="flower-soft animate-floral"
-              draggable="false"
-            />
+          {/* Flores */}
+          <div className="absolute -left-24 top-0 opacity-[0.12] animate-floral">
+            <Image src={leftFlower} alt="Flor esquerda" draggable="false" />
           </div>
-
-          <div className="absolute -right-16 bottom-0 md:-right-28 opacity-[0.12] md:opacity-[0.18] scale-90 md:scale-100">
-            <Image
-              src={rightFlower}
-              alt="right-flower"
-              className="flower-soft animate-floral-slow"
-              draggable="false"
-            />
+          <div className="absolute -right-28 bottom-0 opacity-[0.12] animate-floral-slow">
+            <Image src={rightFlower} alt="Flor direita" draggable="false" />
           </div>
-
           {/* Luz suave central */}
-          <div className="absolute inset-0 bg-gradient-to-t from-background/80 via-transparent to-background/60" />
+          <div className="absolute inset-0 bg-gradient-to-t from-background/90 via-background/70 to-transparent" />
         </div>
 
         {/* Conteúdo */}
-        <div className="relative max-w-3xl mx-auto text-center animate-fadeIn space-y-10">
-          <h2 className="font-serif text-4xl md:text-5xl text-primary mb-6 tracking-wide drop-shadow-sm">
-            Nossa História de Amor
-          </h2>
-
-          <div className="text-lg md:text-xl text-muted-foreground/90 leading-relaxed space-y-8 font-light backdrop-blur-[1px] px-4 md:px-0">
-            <p>
-              A história de Leonardo e Débora começou por acaso — um sorriso,
-              uma conversa, e uma conexão instantânea. Com o tempo, essa conexão
-              cresceu para algo mais profundo: amor, risadas e memórias
-              infinitas.
-            </p>
-            <p>
-              Agora, eles estão prontos para celebrar sua união com a família e
-              amigos que fizeram parte de sua jornada. Junte-se a nós enquanto
-              começamos este lindo novo capítulo juntos.
+        <div className="relative max-w-5xl mx-auto text-center animate-fadeIn space-y-16">
+          <div className="space-y-4">
+            <h2 className="font-serif text-5xl md:text-6xl text-primary drop-shadow-sm">
+              Nossa História de Amor
+            </h2>
+            <p className="text-muted-foreground text-lg md:text-xl italic">
+              “O amor é composto por uma só alma habitando dois corpos.” —
+              Aristóteles
             </p>
           </div>
 
-          {/* Ornamento inferior */}
-          <div className="flex justify-center pt-8">
-            <div className="w-24 h-[1px] bg-primary/30 rounded-full shadow-[0_0_6px_hsl(122_16%_55%_/_0.3)]" />
+          {/* Texto com efeito de vidro */}
+          <div className="relative bg-white/10 backdrop-blur-xl border border-white/20 rounded-3xl shadow-lg p-10 md:p-14 space-y-8 leading-relaxed text-lg text-foreground/90 font-light">
+            <p>
+              A história de{" "}
+              <span className="font-medium text-primary">Leonardo</span> e{" "}
+              <span className="font-medium text-primary">Débora</span> começou
+              por acaso — um sorriso, uma conversa e uma conexão instantânea.
+              Com o tempo, essa conexão se transformou em um amor que floresceu,
+              cheio de risadas, cumplicidade e sonhos compartilhados.
+            </p>
+            <p>
+              Agora, eles estão prontos para celebrar essa linda jornada com
+              todos aqueles que fizeram parte dela. Juntos, iniciam um novo
+              capítulo de amor, fé e eternidade.
+            </p>
+          </div>
+
+          {/* Ornamento */}
+          <div className="relative flex justify-center pt-8">
+            <div className="w-32 h-[2px] bg-primary/40 rounded-full shadow-[0_0_10px_hsl(122_16%_55%_/_0.4)]" />
+            <Heart className="absolute -top-3 text-primary animate-pulse w-6 h-6 bg-background rounded-full p-1 shadow-sm" />
           </div>
         </div>
       </section>
