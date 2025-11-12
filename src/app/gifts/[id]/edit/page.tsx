@@ -1,9 +1,8 @@
 "use client";
 
-import { useState } from "react";
-import { useMutation } from "@tanstack/react-query";
-import { useToast } from "@/hooks/use-toast";
-import { apiRequest } from "@/lib/queryClient";
+import { useState, useEffect } from "react";
+import { useParams, useRouter } from "next/navigation";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import {
   Card,
   CardContent,
@@ -15,23 +14,49 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
-import {
-  Gift as GiftIcon,
-  CheckCircle2,
-  PlusCircle,
-  Loader2,
-  Heart,
-  ArrowLeft,
-} from "lucide-react";
 import { motion } from "framer-motion";
 import Image from "next/image";
+import { useToast } from "@/hooks/use-toast";
+import { apiRequest } from "@/lib/queryClient";
+import { Gift } from "@/shared/schema";
+import {
+  CheckCircle2,
+  Loader2,
+  PlusCircle,
+  Heart,
+  Gift as GiftIcon,
+  ArrowLeft,
+  Trash2,
+} from "lucide-react";
 import leftFlower from "@images/flower-left.svg";
 import rightFlower from "@images/flower-right.svg";
-import { useRouter } from "next/navigation";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+  DialogFooter,
+} from "@/components/ui/dialog";
 
-export default function GiftCreate() {
-  const { toast } = useToast();
+export default function EditGiftPage() {
+  const params = useParams();
   const router = useRouter();
+  const { toast } = useToast();
+  const giftId = params?.id as string;
+  const queryClient = useQueryClient();
+
+  const { data: gift, isLoading } = useQuery<Gift>({
+    queryKey: [`gift-${giftId}`],
+    queryFn: async () => {
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_NETLIFY_URL}/gifts/${giftId}`
+      );
+      if (!res.ok) throw new Error("Erro ao carregar presente");
+      return res.json();
+    },
+    enabled: !!giftId,
+  });
 
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
@@ -39,38 +64,67 @@ export default function GiftCreate() {
   const [personalNote, setPersonalNote] = useState("");
   const [purchaseLinks, setPurchaseLinks] = useState<string[]>([""]);
   const [errors, setErrors] = useState<Record<string, boolean>>({});
+  const [giftToDelete, setGiftToDelete] = useState<Gift | undefined>(undefined);
 
-  const createGiftMutation = useMutation({
+  useEffect(() => {
+    if (gift) {
+      setTitle(gift.title || "");
+      setDescription(gift.description || "");
+      setImageUrl(gift.imageUrl || "");
+      setPersonalNote(gift.personalNote || "");
+      setPurchaseLinks(gift.purchaseLinks?.length ? gift.purchaseLinks : [""]);
+    }
+  }, [gift]);
+
+  const mutation = useMutation({
     mutationFn: async () =>
       apiRequest(
-        "POST",
-        `${process.env.NEXT_PUBLIC_NETLIFY_URL}/gifts/create`,
+        "PUT",
+        `${process.env.NEXT_PUBLIC_NETLIFY_URL}/gifts/${giftId}/edit`,
         {
           title,
           description,
           imageUrl,
           personalNote,
           purchaseLinks: purchaseLinks.filter((link) => link.trim() !== ""),
-          reserved: false,
-          reservedBy: null,
         }
       ),
-    onSuccess: () => {
+    onSuccess: async () => {
       toast({
-        title: "Presente criado com sucesso 💝",
-        description: "O presente foi adicionado à lista!",
+        title: "Presente atualizado com sucesso 💝",
+        description: "As alterações foram salvas!",
       });
-      setTitle("");
-      setDescription("");
-      setImageUrl("");
-      setPersonalNote("");
-      setPurchaseLinks([""]);
-      setErrors({});
+      queryClient.invalidateQueries({ queryKey: [`gift-${giftId}`] });
+      await new Promise((r) => setTimeout(r, 600));
+      router.push("/manage-gifts");
     },
     onError: () =>
       toast({
-        title: "Erro ao criar presente",
+        title: "Erro ao atualizar presente",
         description: "Por favor, tente novamente mais tarde.",
+        variant: "destructive",
+      }),
+  });
+
+  const deleteMutation = useMutation({
+    mutationFn: async () =>
+      apiRequest(
+        "DELETE",
+        `${process.env.NEXT_PUBLIC_NETLIFY_URL}/gifts/${giftId}/delete`
+      ),
+    onSuccess: async () => {
+      toast({
+        title: "Presente removido 💔",
+        description: "O presente foi excluído com sucesso.",
+      });
+      setGiftToDelete(undefined);
+      await new Promise((r) => setTimeout(r, 600));
+      router.push("/manage-gifts");
+    },
+    onError: () =>
+      toast({
+        title: "Erro ao excluir presente",
+        description: "Tente novamente mais tarde.",
         variant: "destructive",
       }),
   });
@@ -84,7 +138,6 @@ export default function GiftCreate() {
 
   const validateFields = () => {
     const hasValidLink = purchaseLinks.some((link) => link.trim() !== "");
-
     const newErrors = {
       title: title.trim() === "",
       description: description.trim() === "",
@@ -92,7 +145,6 @@ export default function GiftCreate() {
       personalNote: personalNote.trim() === "",
       purchaseLinks: !hasValidLink,
     };
-
     setErrors(newErrors);
     return !Object.values(newErrors).some((e) => e);
   };
@@ -102,16 +154,24 @@ export default function GiftCreate() {
       toast({
         title: "Campos obrigatórios faltando",
         description:
-          "Por favor, preencha todos os campos e adicione pelo menos um link de compra válido.",
+          "Por favor, preencha todos os campos e adicione pelo menos um link válido.",
         variant: "destructive",
       });
       return;
     }
-    createGiftMutation.mutate();
+    mutation.mutate();
   };
 
   const inputBase =
     "bg-background/70 border-white/20 focus-visible:ring-2 focus-visible:ring-primary transition";
+
+  if (isLoading) {
+    return (
+      <div className="flex justify-center items-center min-h-screen bg-background/50">
+        <Loader2 className="w-8 h-8 animate-spin text-primary" />
+      </div>
+    );
+  }
 
   return (
     <div className="relative min-h-screen flex flex-col items-center bg-gradient-to-b from-background via-card/70 to-accent/10 px-4 py-16 overflow-hidden">
@@ -141,10 +201,10 @@ export default function GiftCreate() {
           fill="currentColor"
         />
         <h1 className="font-serif text-4xl md:text-5xl text-foreground">
-          Cadastrar Novo Presente
+          Editar Presente
         </h1>
         <p className="text-muted-foreground max-w-md mx-auto">
-          Preencha os detalhes do presente e adicione à lista com carinho 💝
+          Atualize ou remova o presente com carinho 💝
         </p>
       </div>
 
@@ -156,13 +216,13 @@ export default function GiftCreate() {
         className="w-full max-w-2xl z-10"
       >
         <Card className="bg-white/10 backdrop-blur-md border border-white/20 rounded-2xl shadow-lg">
-          <CardHeader>
+          <CardHeader className="flex flex-col gap-3">
             <CardTitle className="text-2xl font-serif flex items-center gap-2 text-primary">
               <GiftIcon className="w-6 h-6" />
               Informações do Presente
             </CardTitle>
             <CardDescription className="text-muted-foreground">
-              Descreva o presente e adicione links de compra.
+              Edite os detalhes ou remova o presente.
             </CardDescription>
 
             <div className="flex justify-between mt-2">
@@ -174,21 +234,36 @@ export default function GiftCreate() {
                 <ArrowLeft className="w-4 h-4" />
                 Voltar
               </Button>
+
+              <Button
+                variant="destructive"
+                className="gap-2 text-sm"
+                onClick={() => setGiftToDelete(gift)}
+                disabled={deleteMutation.isPending}
+              >
+                {deleteMutation.isPending ? (
+                  <>
+                    <Loader2 className="w-4 h-4 animate-spin" />
+                    Excluindo...
+                  </>
+                ) : (
+                  <>
+                    <Trash2 className="w-4 h-4" />
+                    Excluir
+                  </>
+                )}
+              </Button>
             </div>
           </CardHeader>
 
           <CardContent className="space-y-6">
-            {/* Campo: título */}
             <div className="space-y-1">
               <Label htmlFor="title">Título *</Label>
               <Input
                 id="title"
-                placeholder="Ex: Jogo de Toalhas de Banho"
+                placeholder="Ex: Conjunto de Copos"
                 value={title}
-                onChange={(e) => {
-                  setTitle(e.target.value);
-                  if (errors.title) setErrors({ ...errors, title: false });
-                }}
+                onChange={(e) => setTitle(e.target.value)}
                 className={`${inputBase} ${
                   errors.title ? "border-destructive" : ""
                 }`}
@@ -198,18 +273,13 @@ export default function GiftCreate() {
               )}
             </div>
 
-            {/* Campo: descrição */}
             <div className="space-y-1">
               <Label htmlFor="description">Descrição *</Label>
               <Textarea
                 id="description"
                 placeholder="Breve descrição do presente"
                 value={description}
-                onChange={(e) => {
-                  setDescription(e.target.value);
-                  if (errors.description)
-                    setErrors({ ...errors, description: false });
-                }}
+                onChange={(e) => setDescription(e.target.value)}
                 className={`${inputBase} ${
                   errors.description ? "border-destructive" : ""
                 } min-h-24`}
@@ -219,39 +289,35 @@ export default function GiftCreate() {
               )}
             </div>
 
-            {/* Campo: imagem */}
             <div className="space-y-1">
               <Label htmlFor="imageUrl">URL da Imagem *</Label>
               <Input
                 id="imageUrl"
                 placeholder="https://..."
                 value={imageUrl}
-                onChange={(e) => {
-                  setImageUrl(e.target.value);
-                  if (errors.imageUrl)
-                    setErrors({ ...errors, imageUrl: false });
-                }}
+                onChange={(e) => setImageUrl(e.target.value)}
                 className={`${inputBase} ${
                   errors.imageUrl ? "border-destructive" : ""
                 }`}
               />
-              {errors.imageUrl && (
-                <p className="text-destructive text-xs">Campo obrigatório</p>
+              {imageUrl && (
+                <div className="mt-3">
+                  <img
+                    src={imageUrl}
+                    alt="Preview"
+                    className="w-32 h-32 rounded-md object-cover border border-white/30 shadow-sm"
+                  />
+                </div>
               )}
             </div>
 
-            {/* Campo: nota pessoal */}
             <div className="space-y-1">
               <Label htmlFor="personalNote">Mensagem Pessoal *</Label>
               <Textarea
                 id="personalNote"
                 placeholder="Mensagem que aparecerá junto ao presente"
                 value={personalNote}
-                onChange={(e) => {
-                  setPersonalNote(e.target.value);
-                  if (errors.personalNote)
-                    setErrors({ ...errors, personalNote: false });
-                }}
+                onChange={(e) => setPersonalNote(e.target.value)}
                 className={`${inputBase} ${
                   errors.personalNote ? "border-destructive" : ""
                 } min-h-20`}
@@ -261,19 +327,14 @@ export default function GiftCreate() {
               )}
             </div>
 
-            {/* Campo: links */}
             <div className="space-y-1">
               <Label>Links de Compra *</Label>
               {purchaseLinks.map((link, index) => (
                 <Input
-                  key={`${link}-${index}`}
+                  key={index}
                   placeholder={`https://link${index + 1}.com`}
                   value={link}
-                  onChange={(e) => {
-                    handleLinkChange(index, e.target.value);
-                    if (errors.purchaseLinks)
-                      setErrors({ ...errors, purchaseLinks: false });
-                  }}
+                  onChange={(e) => handleLinkChange(index, e.target.value)}
                   className={`${inputBase} ${
                     errors.purchaseLinks && index === 0
                       ? "border-destructive"
@@ -297,13 +358,12 @@ export default function GiftCreate() {
               </Button>
             </div>
 
-            {/* Botão de envio */}
             <Button
               onClick={handleSubmit}
-              disabled={createGiftMutation.isPending}
+              disabled={mutation.isPending}
               className="w-full mt-6 gap-2 bg-primary text-white hover:bg-primary/90 transition"
             >
-              {createGiftMutation.isPending ? (
+              {mutation.isPending ? (
                 <>
                   <Loader2 className="w-5 h-5 animate-spin" />
                   Salvando...
@@ -311,7 +371,7 @@ export default function GiftCreate() {
               ) : (
                 <>
                   <CheckCircle2 className="w-5 h-5" />
-                  Salvar Presente
+                  Salvar Alterações
                 </>
               )}
             </Button>
@@ -319,7 +379,6 @@ export default function GiftCreate() {
         </Card>
       </motion.div>
 
-      {/* Rodapé */}
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
@@ -330,9 +389,52 @@ export default function GiftCreate() {
           className="w-4 h-4 inline text-primary animate-pulse mr-1"
           fill="currentColor"
         />
-        Cada presente é um gesto de amor — obrigado por contribuir com esse
-        momento especial!
+        Atualizar ou excluir um presente também é um gesto de carinho 💖
       </motion.div>
+
+      {/* Modal de confirmação */}
+      <Dialog
+        open={!!giftToDelete}
+        onOpenChange={() => setGiftToDelete(undefined)}
+      >
+        <DialogContent className="sm:max-w-md">
+          <DialogHeader>
+            <DialogTitle className="font-serif text-2xl text-primary">
+              Confirmar exclusão
+            </DialogTitle>
+            <DialogDescription className="text-muted-foreground">
+              Tem certeza de que deseja excluir{" "}
+              <span className="font-semibold text-foreground">
+                {giftToDelete?.title}
+              </span>
+              ? Esta ação não pode ser desfeita.
+            </DialogDescription>
+          </DialogHeader>
+
+          <DialogFooter className="flex justify-end gap-3 pt-4">
+            <Button
+              variant="outline"
+              className="rounded-full"
+              onClick={() => setGiftToDelete(undefined)}
+            >
+              Cancelar
+            </Button>
+            <Button
+              variant="destructive"
+              className="rounded-full"
+              disabled={deleteMutation.isPending}
+              onClick={() => deleteMutation.mutate()}
+            >
+              {deleteMutation.isPending ? (
+                <Loader2 className="w-4 h-4 animate-spin mr-2" />
+              ) : (
+                <Trash2 className="w-4 h-4 mr-2" />
+              )}
+              Excluir
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }

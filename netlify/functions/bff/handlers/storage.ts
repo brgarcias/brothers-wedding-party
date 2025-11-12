@@ -15,7 +15,11 @@ export interface IStorage {
   createMessage(event: HandlerEvent): Promise<HandlerResponse>;
   getAllMessages(): Promise<HandlerResponse>;
 
+  editGift(event: HandlerEventWithParams): Promise<HandlerResponse>;
+
   reserveGift(event: HandlerEventWithParams): Promise<HandlerResponse>;
+
+  deleteGift(event: HandlerEventWithParams): Promise<HandlerResponse>;
 }
 
 interface HandlerEventWithParams extends HandlerEvent {
@@ -79,6 +83,27 @@ export class DrizzleStorage implements IStorage {
     } catch (error) {
       console.error("Error creating gift:", error);
       return errorResponse(500, "Failed to create gift");
+    }
+  }
+
+  async editGift(event: HandlerEventWithParams): Promise<HandlerResponse> {
+    if (!event.body) {
+      return errorResponse(400, "No data provided");
+    }
+    const data: Partial<Gift> = JSON.parse(event.body);
+    const giftId = event.pathParameters?.id;
+
+    if (!giftId) {
+      return errorResponse(400, "Gift ID not provided");
+    }
+
+    try {
+      const updatedGift = await this.updateGift(giftId, data);
+
+      return jsonResponse(201, updatedGift);
+    } catch (error) {
+      console.error("Error updating gift:", error);
+      return errorResponse(500, "Failed to update gift");
     }
   }
 
@@ -168,6 +193,36 @@ export class DrizzleStorage implements IStorage {
     } catch (error) {
       console.error("Error reserving gift:", error);
       return errorResponse(500, "Failed to reserve gift");
+    }
+  }
+
+  async deleteGift(event: HandlerEventWithParams): Promise<HandlerResponse> {
+    const giftId = event.pathParameters?.id;
+
+    if (!giftId) {
+      return errorResponse(400, "Gift ID not provided");
+    }
+
+    try {
+      return await db.transaction(async (tx) => {
+        const existingGift = await tx
+          .select()
+          .from(gifts)
+          .where(eq(gifts.id, giftId))
+          .then((rows) => rows[0]);
+
+        if (!existingGift) {
+          return errorResponse(404, "Gift not found");
+        }
+
+        await tx.delete(reservations).where(eq(reservations.giftId, giftId));
+        await tx.delete(gifts).where(eq(gifts.id, giftId));
+
+        return jsonResponse(200, { message: "Gift deleted successfully" });
+      });
+    } catch (error) {
+      console.error("Error deleting gift:", error);
+      return errorResponse(500, "Failed to delete gift");
     }
   }
 }

@@ -1,7 +1,16 @@
 "use client";
 
+import { useEffect } from "react";
+import { useRouter } from "next/navigation";
 import { useQuery } from "@tanstack/react-query";
-import { Mail, User, MessageCircle, Loader2, Heart } from "lucide-react";
+import {
+  Mail,
+  User,
+  MessageCircle,
+  Loader2,
+  Heart,
+  ArrowLeft,
+} from "lucide-react";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { useToast } from "@/hooks/use-toast";
 import type { Message } from "@/shared/schema";
@@ -9,8 +18,10 @@ import { motion, useSpring, useTransform } from "framer-motion";
 import Image from "next/image";
 import leftFlower from "@images/flower-left.svg";
 import rightFlower from "@images/flower-right.svg";
+import { Button } from "@/components/ui/button";
 
 export default function MessagesPage() {
+  const router = useRouter();
   const { toast } = useToast();
 
   const { data, isLoading, error } = useQuery<Message[]>({
@@ -23,7 +34,10 @@ export default function MessagesPage() {
   const count = useSpring(0, { stiffness: 60, damping: 10 });
   const rounded = useTransform(count, (value) => Math.floor(value));
 
-  if (messagesCount > 0) count.set(messagesCount);
+  // ✅ atualiza o contador somente quando o número de mensagens muda
+  useEffect(() => {
+    count.set(messagesCount);
+  }, [messagesCount, count]);
 
   if (isLoading) {
     return (
@@ -64,7 +78,7 @@ export default function MessagesPage() {
       </div>
 
       {/* Conteúdo */}
-      <main className="relative z-10 max-w-4xl mx-auto px-4 py-16 space-y-10 animate-fadeIn">
+      <main className="relative z-10 max-w-4xl mx-auto px-4 py-20 space-y-10 animate-fadeIn">
         {/* Cabeçalho */}
         <div className="text-center space-y-4">
           <Heart
@@ -95,6 +109,18 @@ export default function MessagesPage() {
               </span>
             </motion.div>
           )}
+
+          {/* Botão flutuante de voltar */}
+          <div className="block">
+            <Button
+              variant="outline"
+              onClick={() => router.push("/manage-gifts")}
+              className="rounded-full border-primary/30 text-primary bg-white/70 hover:bg-primary/10 shadow-sm transition-all"
+            >
+              <ArrowLeft className="w-4 h-4 mr-2" />
+              Voltar
+            </Button>
+          </div>
         </div>
 
         {/* Nenhuma mensagem */}
@@ -104,10 +130,10 @@ export default function MessagesPage() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
           >
-            <Card className="text-center py-16 bg-white/10 backdrop-blur-sm border-white/20 rounded-2xl shadow-md">
+            <Card className="text-center py-16 bg-white/20 backdrop-blur-md border-white/30 rounded-2xl shadow-lg">
               <CardContent>
                 <MessageCircle className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
-                <h2 className="font-serif text-2xl mb-2">
+                <h2 className="font-serif text-2xl mb-2 text-foreground">
                   Nenhuma mensagem ainda
                 </h2>
                 <p className="text-muted-foreground max-w-sm mx-auto">
@@ -126,11 +152,11 @@ export default function MessagesPage() {
               key={msg.id}
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: i * 0.1 }}
+              transition={{ delay: i * 0.05 }}
             >
-              <Card className="border border-primary/20 bg-white/10 backdrop-blur-sm rounded-2xl shadow-sm hover:shadow-md transition-all duration-300">
+              <Card className="border border-primary/20 bg-white/70 backdrop-blur-md rounded-2xl shadow-sm hover:shadow-md transition-all duration-300">
                 <CardHeader>
-                  <CardTitle className="flex items-center gap-2 text-primary">
+                  <CardTitle className="flex items-center gap-2 text-primary font-medium">
                     <User className="w-5 h-5" />
                     {msg.name}
                   </CardTitle>
