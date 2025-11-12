@@ -13,7 +13,7 @@ import { Input } from "@/components/ui/input";
 import { Copy, Check, Heart } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import Image from "next/image";
-import PIX_QR_CODE from "@images/pix-qr.svg";
+import PIX_QR_CODE from "@images/qrcode-pix.png";
 import { motion } from "framer-motion";
 import leftFlower from "@images/flower-left.svg";
 import rightFlower from "@images/flower-right.svg";

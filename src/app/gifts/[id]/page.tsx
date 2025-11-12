@@ -24,7 +24,7 @@ import {
 import { useParams } from "next/navigation";
 import leftFlower from "@images/flower-left.svg";
 import rightFlower from "@images/flower-right.svg";
-import PIX_QR_CODE from "@images/pix-qr.svg";
+import PIX_QR_CODE from "@images/qrcode-pix.png";
 import { motion } from "framer-motion";
 
 const DEFAULT_PIX_KEY = "leonardo.debora.casamento@email.com";
