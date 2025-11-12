@@ -24,13 +24,22 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { Heart, Send, CheckCircle2 } from "lucide-react";
+import { Heart, Send, CheckCircle2, ArrowLeft } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { apiRequest } from "@/lib/queryClient";
-import { insertMessageSchema, type InsertMessage } from "@/shared/schema";
+import { z } from "zod";
 import Image from "next/image";
 import leftFlower from "@images/flower-left.svg";
 import rightFlower from "@images/flower-right.svg";
+
+// Schema Zod para validação obrigatória
+const insertMessageSchema = z.object({
+  name: z.string().min(1, "Nome é obrigatório"),
+  email: z.string().email("Email inválido"),
+  message: z.string().min(1, "Mensagem não pode estar vazia"),
+});
+
+type InsertMessage = z.infer<typeof insertMessageSchema>;
 
 export default function Contact() {
   const [submitted, setSubmitted] = useState(false);
@@ -71,6 +80,9 @@ export default function Contact() {
 
   const onSubmit = (data: InsertMessage) => sendMessageMutation.mutate(data);
 
+  const inputBase =
+    "bg-background/80 border-white/20 focus:ring-primary focus:border-primary rounded-xl transition";
+
   return (
     <div className="relative min-h-screen bg-gradient-to-b from-background via-card/70 to-accent/10 overflow-hidden">
       {/* Flores decorativas */}
@@ -92,7 +104,6 @@ export default function Contact() {
         </motion.div>
       </div>
 
-      {/* Conteúdo principal */}
       <main className="relative z-10 max-w-2xl mx-auto px-6 py-20 space-y-12 animate-fadeIn">
         {/* Cabeçalho */}
         <div className="text-center space-y-4">
@@ -144,6 +155,13 @@ export default function Contact() {
               <CardDescription className="text-muted-foreground">
                 Preencha o formulário abaixo com amor 💌
               </CardDescription>
+              <div className="flex justify-between mt-2">
+                <Link href="/">
+                  <Button variant="outline" className="gap-2 text-sm">
+                    <ArrowLeft className="w-4 h-4" /> Voltar
+                  </Button>
+                </Link>
+              </div>
             </CardHeader>
             <CardContent>
               <Form {...form}>
@@ -157,12 +175,16 @@ export default function Contact() {
                     name="name"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>Nome</FormLabel>
+                        <FormLabel>Nome *</FormLabel>
                         <FormControl>
                           <Input
                             placeholder="Seu nome"
                             {...field}
-                            className="bg-background/80 border-white/20 focus:ring-primary focus:border-primary rounded-xl"
+                            className={`${inputBase} ${
+                              form.formState.errors.name
+                                ? "border-destructive"
+                                : ""
+                            }`}
                           />
                         </FormControl>
                         <FormMessage />
@@ -176,13 +198,17 @@ export default function Contact() {
                     name="email"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>E-mail</FormLabel>
+                        <FormLabel>E-mail *</FormLabel>
                         <FormControl>
                           <Input
                             type="email"
                             placeholder="seu.email@exemplo.com"
                             {...field}
-                            className="bg-background/80 border-white/20 focus:ring-primary focus:border-primary rounded-xl"
+                            className={`${inputBase} ${
+                              form.formState.errors.email
+                                ? "border-destructive"
+                                : ""
+                            }`}
                           />
                         </FormControl>
                         <FormMessage />
@@ -196,11 +222,15 @@ export default function Contact() {
                     name="message"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>Mensagem</FormLabel>
+                        <FormLabel>Mensagem *</FormLabel>
                         <FormControl>
                           <Textarea
                             placeholder="Deixe aqui seus votos, memórias ou recados..."
-                            className="min-h-32 resize-none bg-background/80 border-white/20 focus:ring-primary focus:border-primary rounded-xl"
+                            className={`${inputBase} min-h-32 resize-none ${
+                              form.formState.errors.message
+                                ? "border-destructive"
+                                : ""
+                            }`}
                             {...field}
                           />
                         </FormControl>

@@ -34,6 +34,7 @@ export default function GiftDetail() {
   const giftId = params?.id as string;
   const [guestName, setGuestName] = useState("");
   const [copiedPix, setCopiedPix] = useState(false);
+  const [nameError, setNameError] = useState(false);
   const { toast } = useToast();
 
   const { data: gift, isLoading } = useQuery<Gift>({
@@ -65,10 +66,12 @@ export default function GiftDetail() {
   });
 
   const handleReserve = () => {
-    if (!guestName.trim()) {
+    const nameParts = guestName.trim().split(" ").filter(Boolean);
+    if (nameParts.length < 2) {
+      setNameError(true);
       toast({
-        title: "Informe seu nome",
-        description: "Por favor, insira seu nome para reservar este presente.",
+        title: "Nome inválido",
+        description: "Por favor, insira seu nome completo (nome e sobrenome).",
         variant: "destructive",
       });
       return;
@@ -296,10 +299,20 @@ export default function GiftDetail() {
                     id="guestName"
                     placeholder="Digite seu nome"
                     value={guestName}
-                    onChange={(e) => setGuestName(e.target.value)}
+                    onChange={(e) => {
+                      setGuestName(e.target.value);
+                      setNameError(false);
+                    }}
                     disabled={reserveMutation.isPending}
-                    className="bg-background/70 border-white/20"
+                    className={`bg-background/70 border ${
+                      nameError ? "border-destructive" : "border-white/20"
+                    } rounded-xl focus:ring-primary focus:border-primary`}
                   />
+                  {nameError && (
+                    <p className="text-destructive text-xs">
+                      Por favor, insira seu nome e sobrenome.
+                    </p>
+                  )}
                 </div>
                 <Button
                   onClick={handleReserve}
