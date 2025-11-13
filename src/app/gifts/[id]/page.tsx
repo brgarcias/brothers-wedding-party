@@ -27,7 +27,7 @@ import rightFlower from "@images/flower-right.svg";
 import PIX_QR_CODE from "@images/qrcode-pix.png";
 import { motion } from "framer-motion";
 
-const DEFAULT_PIX_KEY = "leonardo.debora.casamento@email.com";
+const DEFAULT_PIX_KEY = "deboraeleonardoalvessartori@gmail.com";
 
 export default function GiftDetail() {
   const params = useParams();
@@ -122,6 +122,8 @@ export default function GiftDetail() {
   }
 
   const pixKey = (gift as any).pixKey ?? DEFAULT_PIX_KEY;
+  const pixKeyCode =
+    "00020126590014BR.GOV.BCB.PIX0137Deboraeleonardoalvessartori@gmail.com5204000053039865802BR5901N6001C62190515CASAMENTOLEODEB6304A11C";
   const pixQrUrl = (gift as any).pixQrUrl ?? PIX_QR_CODE;
 
   return (
@@ -224,7 +226,7 @@ export default function GiftDetail() {
                   className="font-mono text-sm bg-background/80 border-white/10 w-full"
                 />
                 <Button
-                  onClick={() => copyPixKey(pixKey)}
+                  onClick={() => copyPixKey(pixKeyCode)}
                   variant={copiedPix ? "secondary" : "outline"}
                   className="w-full sm:w-auto shrink-0"
                 >

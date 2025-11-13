@@ -18,7 +18,10 @@ import { motion } from "framer-motion";
 import leftFlower from "@images/flower-left.svg";
 import rightFlower from "@images/flower-right.svg";
 
-const PIX_KEY = "leonardo.debora.casamento@email.com";
+const PIX_KEY = "deboraeleonardoalvessartori@gmail.com";
+
+const PIX_KEY_CODE =
+  "00020126590014BR.GOV.BCB.PIX0137Deboraeleonardoalvessartori@gmail.com5204000053039865802BR5901N6001C62190515CASAMENTOLEODEB6304A11C";
 
 export function PixDonation() {
   const [copied, setCopied] = useState(false);
@@ -26,7 +29,7 @@ export function PixDonation() {
 
   const copyPixKey = async () => {
     try {
-      await navigator.clipboard.writeText(PIX_KEY);
+      await navigator.clipboard.writeText(PIX_KEY_CODE);
       setCopied(true);
       toast({
         title: "Chave Pix copiada!",
