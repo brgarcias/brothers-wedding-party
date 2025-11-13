@@ -37,6 +37,11 @@ export default function Home() {
 
         {/* Hero Content */}
         <div className="relative z-10 text-center px-6 max-w-4xl mx-auto animate-fadeIn space-y-8">
+          {/* Contador */}
+          <div className="mt-10 max-w-lg mx-auto">
+            <CountdownTimer targetDate={weddingDate} />
+          </div>
+
           {/* Frase cursiva */}
           <h2 className="font-cursive text-3xl md:text-4xl text-white/90 drop-shadow-md tracking-wide">
             Para sempre começa aqui
@@ -55,11 +60,6 @@ export default function Home() {
           <p className="text-lg md:text-xl text-white/80 font-light uppercase tracking-[0.25em]">
             7 • Março • 2026
           </p>
-
-          {/* Contador */}
-          <div className="mt-10 max-w-lg mx-auto">
-            <CountdownTimer targetDate={weddingDate} />
-          </div>
 
           {/* Botões */}
           <div className="mt-10 flex flex-wrap gap-4 justify-center">
@@ -87,7 +87,6 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Love Story Section */}
       {/* Love Story Section */}
       <section className="relative py-32 px-6 overflow-hidden bg-gradient-to-b from-background via-card/70 to-accent/10">
         {/* Fundo decorativo */}
